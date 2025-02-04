@@ -1,0 +1,1204 @@
+{
+    "cells": [
+        {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": [
+                "# Linux for Data Science\n",
+                "## Part I: Introduction and Core Concepts"
+            ]
+        },
+        {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": [
+                "### 1.1 Why Linux for Data Science?\n",
+                "\n",
+                "Linux has long been the preferred operating system (OS) for scientific computing, server environments, and large-scale data processing systems. While data science can certainly be done on other operating systems (Windows, macOS), the open-source nature, robustness, and flexibility of Linux distributions offer several advantages:\n",
+                "\n",
+                "- **Stability and Security:** Linux is known for its reliability and security features. Frequent security patches and a strong development community help maintain a secure environment for data-intensive tasks.\n",
+                "- **Community and Open-Source Ecosystem:** The large community behind Linux distributions and the open-source software (OSS) ethos means that you can find a vast library of free tools and libraries specifically tailored to scientific and data-heavy workloads.\n",
+                "- **Server and Cloud Environments:** Most servers, supercomputers, and cloud platforms run on some form of Linux. Understanding Linux helps you work seamlessly across development, testing, and production environments.\n",
+                "- **Powerful Command-Line Tools:** Linux provides an extensive set of command-line tools such as `grep`, `awk`, `sed`, and more, which can rapidly process large text files and datasets directly from the terminal without requiring specialized software.\n",
+                "- **Customizability:** Because Linux is open source, you have more freedom to customize the environment, install only the necessary components, and configure the system to suit your data workflows."
+            ]
+        },
+        {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": [
+                "### 1.2 Common Linux Distributions\n",
+                "\n",
+                "Distributions (often called distros) are different flavors of Linux that package the kernel, software repositories, and configuration tools. Some popular ones for data science include:\n",
+                "\n",
+                "- **Ubuntu:** A popular choice among beginners and experienced users. It has a large community, good support for recent software packages, and is widely used on desktops, servers, and cloud instances.\n",
+                "- **Debian:** Known for its stability. Ubuntu is actually based on Debian, but Debian itself tends to update more conservatively, which some users prefer for production systems.\n",
+                "- **Fedora:** Sponsored by Red Hat, Fedora is a cutting-edge distro that often includes the newest software. It can be a good environment if you want the latest libraries and frameworks.\n",
+                "- **CentOS / Rocky Linux / AlmaLinux:** These are downstream rebuilds of Red Hat Enterprise Linux (RHEL). They’re typically used in production server environments where long-term stability is prioritized.\n",
+                "- **openSUSE:** Another user-friendly distribution with strong enterprise support. It’s stable and has good community backing.\n",
+                "\n",
+                "For a data science learner, Ubuntu (or a distribution derived from Ubuntu) is often the most straightforward choice due to its large community and user-friendly ecosystem. However, the concepts in this tutorial apply to almost any Linux distribution."
+            ]
+        },
+        {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": [
+                "### 1.3 Installing and Getting Started\n",
+                "\n",
+                "There are multiple ways to get started with Linux:\n",
+                "\n",
+                "- **Dual Boot:** Install Linux alongside your existing OS on your PC or laptop. This allows you to choose the operating system when you start up.\n",
+                "- **Virtual Machine (VM):** Use software like VirtualBox or VMware to install Linux within your existing OS. This is a safer option for beginners and doesn’t require partitioning your hard drive.\n",
+                "- **Cloud/Server Instance:** Provision a cloud-based Linux instance on providers like AWS, Google Cloud Platform (GCP), or Microsoft Azure. You can then connect via SSH. This is common for production data science workflows.\n",
+                "- **Windows Subsystem for Linux (WSL):** On Windows 10 and 11, you can install a Linux subsystem that runs directly within Windows. It’s an excellent way to experiment with Linux terminal commands without leaving Windows."
+            ]
+        },
+        {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": [
+                "### 1.4 The Terminal and Shell\n",
+                "\n",
+                "The terminal (or console) is the command-line interface (CLI) that lets you interact with the system by typing commands. The shell is the program that processes these commands.\n",
+                "\n",
+                "#### Common shells include:\n",
+                "\n",
+                "- **Bash (Bourne-Again SHell):** The default on many Linux systems.\n",
+                "- **Zsh:** Known for its user-friendly features like auto-completion and theme-able prompt.\n",
+                "\n",
+                "As a data scientist, you’ll likely spend a significant amount of time in the shell—navigating directories, running scripts, manipulating data files, and launching software.\n",
+                "\n",
+                "#### Basic Command Structure\n",
+                "\n",
+    ```bash
+    command [options
+                ] [arguments
+                ]
+    ```\n","- **command:** The executable or program to run (e.g., `ls`, `cd`, `grep`).\n","- **options:** Often single-character flags (e.g., `-l`) or longer, more descriptive flags (e.g., `--help`).\n",
+                "- **arguments:** Filenames, directories, or other data the command operates on."
+            ]
+        },
+        {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": [
+                "### 1.5 Navigating Directories\n",
+                "\n",
+                "When you first open a terminal, you’re typically placed in your home directory, something like `/home/username`. The root directory `/` is the base of the Linux filesystem. Important directories in Linux include:\n",
+                "\n",
+                "- `/bin` and `/usr/bin`: Common software binaries (executables).\n",
+                "- `/lib` and `/usr/lib`: System libraries.\n",
+                "- `/etc`: System configuration files.\n",
+                "- `/home`: Home directories of all users.\n",
+                "- `/var`: Log files and other variable data.\n",
+                "- `/tmp`: Temporary files.\n",
+                "- `/opt`: Optional or third-party software.\n",
+                "\n",
+                "#### Key commands to know:\n",
+                "\n",
+    ```bash
+    pwd          # Print the current working directory path.
+    ls           # List directory contents.
+    ls -l        # Long listing format.
+    ls -a        # Include hidden files.
+    ls -lh       # Show file sizes in human-readable form.
+    cd <directory>  # Change directory to <directory>.
+    cd ..        # Go up one level.
+    cd ~         # Go to your home directory.
+    cd -         # Return to the previous directory.
+    ```"
+            }
+        },
+        {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": [
+                "### 1.6 Working with Files and Directories\n",
+                "\n",
+                "**Creating and Deleting**\n",
+                "\n",
+    ```bash
+    mkdir <directory>        # Create a new directory.
+    rmdir <directory>        # Remove an empty directory.
+    rm <file>                # Remove a file.
+    rm -r <directory>        # Remove a directory and its contents recursively.
+    touch <file>             # Create a blank file (or update its timestamp if it exists).
+    ```\n","\n","**Copying and Moving**\n",
+                "\n",
+    ```bash
+    cp <source> <destination>            # Copy a file or directory.
+    cp -r <source_dir> <destination_dir> # Copy recursively.
+    mv <source> <destination>            # Move or rename a file or directory.
+    ```\n","\n","**Viewing Contents**\n",
+                "\n",
+    ```bash
+    cat <file>            # Output file contents to the terminal.
+    less <file>           # Paginate through file contents (use arrow keys or PgDn/PgUp, press q to exit).
+    head <file>           # Show the first 10 lines (use -n for a different number).
+    tail <file>           # Show the last 10 lines (same -n usage).
+    tail -f <file>        # Follow the file in real-time—useful for monitoring log files.
+    ```"
+            }
+        },
+        {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": [
+                "### 1.7 Users, Groups, and Permissions\n",
+                "\n",
+                "Linux is a multi-user system that distinguishes between regular users, the root user (administrator or superuser), and groups that can be assigned to one or more users.\n",
+                "\n",
+                "#### Understanding File Permissions\n",
+                "\n",
+                "Every file and directory in Linux has associated permissions split into three entities:\n",
+                "\n",
+                "- **Owner (user):** Usually the user who created the file.\n",
+                "- **Group:** A collection of users who share certain privileges.\n",
+                "- **Others:** Everyone else.\n",
+                "\n",
+                "Permissions are typically shown as a string of 10 characters, e.g., `-rwxr-xr--`:\n",
+                "\n",
+                "- The first character indicates file type (`-` for a regular file, `d` for directory).\n",
+    - The next three characters are the owner (user) permissions (`rwx`).\n","- The following three are the group permissions (`r-x`).\n","- The last three are the permissions for others (`r--`).\n",
+                "\n",
+                "**Where:**\n",
+                "\n",
+                "- `r` = read\n",
+                "- `w` = write\n",
+                "- `x` = execute\n",
+                "- `-` = no permission\n",
+                "\n",
+                "You can change file or directory permissions with `chmod`, ownership with `chown`, and group ownership with `chgrp`.\n",
+                "\n",
+                "#### Switching Users and Privileges\n",
+                "\n",
+                "- **sudo:** Stands for “superuser do,” allows a permitted user to run commands as the superuser.\n",
+    - `sudo <command>`: Run `<command>` with elevated privileges.\n","- `sudo -i` or `sudo su`: Start a root shell. Use carefully to avoid damaging your system.\n","- `su <username>`: Switch user. You’ll need the password of the user you’re switching to."
+            }
+        },
+        {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": [
+                "### 1.8 The Linux Philosophy and the Power of the Command Line\n",
+                "\n",
+                "Linux (and UNIX-like systems in general) follows a philosophy of creating small, modular programs that can be chained together to perform complex tasks. For example, if you want to see how many lines match a particular pattern in a file, you might do:\n",
+                "\n",
+    ```bash
+    grep \"pattern\" file.txt | wc -l
+    ```\n","\n","This command uses `grep` to search for \"pattern\" in `file.txt` and then pipes (`|`) the results to `wc -l` (word count in line mode) to get the line count. Understanding this principle—the pipeline—and mastering basic tools can greatly boost your efficiency in handling data."
+            }
+        },
+        {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": [
+                "## Part II: Essential Command-Line Tools for Data Science"
+            ]
+        },
+        {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": [
+                "### 2.1 Searching and Pattern Matching\n",
+                "\n",
+                "**grep**\n",
+                "\n",
+                "`grep` stands for “global regular expression print.” It searches for lines matching a pattern in a file or stdin. **Key options:**\n",
+                "\n",
+    ```bash
+    grep <pattern> <file>           # Print lines in <file> that match <pattern>.
+    grep -i <pattern> <file>        # Case-insensitive search.
+    grep -v <pattern> <file>        # Invert match (show lines that do not match).
+    grep -r <pattern> <directory>    # Recursively search through a directory.
+    ```\n","\n","**Regular Expressions (regex)**\n",
+                "\n",
+                "Regex is a powerful way to specify search patterns. A few examples:\n",
+                "\n",
+                "- `^`: Matches the start of a line.\n",
+                "  - *Example:* `grep \"^Error\" logfile` matches lines starting with “Error.”\n",
+                "- `$`: Matches the end of a line.\n",
+                "  - *Example:* `grep \"done$\" script.sh` matches lines ending with “done.”\n",
+                "- `.`: Matches any single character.\n",
+                "- `*`: Matches zero or more of the preceding element.\n",
+                "- `[]`: Matches any one character in the set.\n",
+                "  - *Example:* `grep \"[0-9]\" data.csv` matches lines containing any digit.\n",
+                "\n",
+                "Learning regex can be extremely useful for parsing logs, cleaning data, or quickly extracting relevant lines from large text-based datasets."
+            ]
+        },
+        {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": [
+                "### 2.2 Filtering and Transforming Data\n",
+                "\n",
+                "**sed**\n",
+                "\n",
+                "`sed` (stream editor) is often used to search and replace text in a stream:\n",
+                "\n",
+    ```bash
+    sed 's/<pattern>/<replacement>/g' <file>
+    ```\n","- `s`: Substitute.\n","- `g`: Global replacement on each line.\n",
+                "\n",
+                "You can also use `sed` in a pipeline without editing the file in-place:\n",
+                "\n",
+    ```bash
+    cat file.txt | sed 's/foo/bar/g'
+    ```\n","\n","To edit a file in-place, you can use:\n",
+                "\n",
+    ```bash
+    sed -i 's/foo/bar/g' file.txt
+    ```\n","**Note:** Use caution with `sed -i`, as it changes the file content permanently unless you specify a backup.\n","\n",
+                "**awk**\n",
+                "\n",
+                "`awk` is a scripting language designed for text processing. It can handle column-based operations in CSV or similar files. For example:\n",
+                "\n",
+    ```bash
+    awk -F, '{ print $2, $5
+                }' data.csv
+    ```\n","- `-F,` sets the field separator to a comma (typical for CSV files).\n","- `$2` refers to the second column, `$5` refers to the fifth column.\n",
+                "\n",
+                "You can also perform calculations:\n",
+                "\n",
+    ```bash
+    awk -F, '{ sum += $3
+                } END { print sum
+                }' data.csv
+    ```\n","This aggregates the values in the third column of `data.csv`.\n","\n",
+                "**cut, sort, uniq**\n",
+                "\n",
+                "- **cut:** Extract columns by position or delimiter.\n",
+                "  ```bash\n",
+                "  cut -d',' -f2 data.csv   # extracts the second field in a comma-separated file.\n",
+                "  ```\n",
+                "- **sort:** Sort lines in alphabetical or numerical order.\n",
+                "  ```bash\n",
+                "  sort -n file.txt   # sorts numerically.\n",
+                "  ```\n",
+                "- **uniq:** Removes or counts duplicate lines.\n",
+                "  ```bash\n",
+                "  sort file.txt | uniq   # removes duplicates.\n",
+                "  sort file.txt | uniq -c   # prefixes each unique line with its count of occurrences.\n",
+                "  ```\n",
+                "\n",
+                "These tools can be chained in a pipeline to perform powerful transformations on the fly. For instance:\n",
+                "\n",
+    ```bash
+    cut -d',' -f2 data.csv | sort | uniq -c | sort -nr
+    ```\n","This command:\n","\n",
+                "1. Extracts the second column,\n",
+                "2. Sorts the values,\n",
+                "3. Counts unique occurrences,\n",
+                "4. Sorts in numeric reverse order (most frequent first)."
+            }
+        },
+        {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": [
+                "### 2.3 Viewing and Managing Processes\n",
+                "\n",
+                "**ps, top, and htop**\n",
+                "\n",
+                "- `ps aux`: Show running processes with details such as CPU and memory usage, owner, and command.\n",
+                "- `top`: Interactive process viewer. Press `q` to quit, `Shift + M` to sort by memory, etc.\n",
+                "- `htop`: An enhanced version of `top` (not always installed by default). It displays color-coded usage stats and allows easier navigation of processes.\n",
+                "\n",
+                "**kill and killall**\n",
+                "\n",
+                "Use `kill` to send signals to processes (commonly the TERM or KILL signals). For example:\n",
+                "\n",
+    ```bash
+    kill 1234   # Terminates the process with PID (Process ID) 1234.
+    ```\n","\n","You can also kill processes by name with `killall`:\n",
+                "\n",
+    ```bash\n","killall python   # Closes all processes named python.\n","```"
+            ]
+        },
+        {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": [
+                "### 2.4 Package Management\n",
+                "\n",
+                "Depending on your Linux distribution, you’ll have different package managers to install, update, and remove software. For Debian/Ubuntu-based systems, you’ll use `apt` (or the older `apt-get`). For Red Hat/Fedora-based systems, you’ll use `dnf` or `yum`.\n",
+                "\n",
+                "**Ubuntu/Debian:**\n",
+                "\n",
+    ```bash
+    sudo apt update             # Updates the list of available packages.
+    sudo apt upgrade            # Upgrades installed packages to the latest versions.
+    sudo apt install <package>  # Installs the specified package.
+    sudo apt remove <package>   # Removes a package but leaves configuration files.
+    sudo apt autoremove         # Removes unused dependencies.
+    ```\n","\n","**Fedora/Red Hat:**\n",
+                "\n",
+    ```bash
+    sudo dnf update             # Updates the list of available packages.
+    sudo dnf upgrade            # Upgrades installed packages.
+    sudo dnf install <package>  # Installs the specified package.
+    sudo dnf remove <package>   # Removes a package.
+    ```"
+            ]
+        },
+        {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": [
+                "### 2.5 Text Editors\n",
+                "\n",
+                "**nano**\n",
+                "\n",
+                "A beginner-friendly editor. **Basic usage:**\n",
+                "\n",
+    ```bash
+    nano <file>    # Opens <file> in nano.
+    ```\n","- Use the arrow keys to navigate.\n","- Keyboard shortcuts appear at the bottom (e.g., `^O` to save, `^X` to exit).\n",
+                "\n",
+                "**vim**\n",
+                "\n",
+                "A more advanced modal editor.\n",
+                "\n",
+                "- **Command mode:** Where you type commands (like `:wq` to save and quit).\n",
+                "- **Insert mode:** Where you insert text.\n",
+                "\n",
+                "**Basic usage:**\n",
+                "\n",
+    ```bash
+    vim <file>    # Open <file> in vim.
+    ```\n","- Press `i` to enter insert mode, type text.\n","- Press `Esc` to return to command mode.\n",
+                "- Type `:w` to save, `:q` to quit.\n",
+                "\n",
+                "**Emacs**\n",
+                "\n",
+                "Another powerful text editor with extensive customization. **Usage:**\n",
+                "\n",
+    ```bash
+    emacs <file>   # Opens <file> in Emacs.
+    ```\n","- Has different modes, such as text mode, programming modes, etc.\n","- Can be used in GUI or in the terminal."
+            }
+        },
+        {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": [
+                "## Part III: Setting Up Your Data Science Environment"
+            ]
+        },
+        {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": [
+                "### 3.1 Installing Python and R\n",
+                "\n",
+                "**Python**\n",
+                "\n",
+                "Most modern Linux distributions come with Python installed. However, you often want a recent version of Python 3 and a virtual environment system.\n",
+                "\n",
+                "- **Ubuntu:**\n",
+                "  ```bash\n",
+                "  sudo apt install python3 python3-pip python3-venv\n",
+                "  ```\n",
+                "- **Fedora:**\n",
+                "  ```bash\n",
+                "  sudo dnf install python3 python3-pip python3-virtualenv\n",
+                "  ```\n",
+                "Once installed, verify with:\n",
+                "\n",
+    ```bash
+    python3 --version
+    pip3 --version
+    ```\n","\n","**Virtual Environments**\n",
+                "\n",
+                "Create a Python virtual environment to isolate packages:\n",
+                "\n",
+    ```bash
+    python3 -m venv myenv
+    source myenv/bin/activate
+    pip install numpy pandas scipy scikit-learn
+    ```\n","Deactivate the environment with `deactivate`.\n","\n",
+                "**R**\n",
+                "\n",
+                "Install R from your distribution’s repository:\n",
+                "\n",
+                "- **Ubuntu:**\n",
+                "  ```bash\n",
+                "  sudo apt install r-base\n",
+                "  ```\n",
+                "- **Fedora:**\n",
+                "  ```bash\n",
+                "  sudo dnf install R\n",
+                "  ```\n",
+                "You can also install packages from the R console:\n",
+                "\n",
+    ```R
+    install.packages(\"dplyr\")
+    library(dplyr)
+    ```"
+            ]
+        },
+        {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": [
+                "### 3.2 Conda for Package Management\n",
+                "\n",
+                "Conda is a popular package manager and environment manager especially in data science circles (the default environment manager in Anaconda and Miniconda distributions).\n",
+                "\n",
+                "- **Miniconda:** A lightweight version of Anaconda with just `conda` and Python.\n",
+                "- **Anaconda:** A full distribution containing Python, R, and over 100 data science packages.\n",
+                "\n",
+                "**To install Miniconda:**\n",
+                "\n",
+                "1. Download the installer (e.g., `Miniconda3-latest-Linux-x86_64.sh`).\n",
+                "2. Run the installer:\n",
+                "\n",
+    ```bash
+    bash Miniconda3-latest-Linux-x86_64.sh
+    ```\n","3. Follow the prompts.\n","\n",
+                "Once installed:\n",
+                "\n",
+    ```bash
+    conda create -n mydsenv python=3.9
+    conda activate mydsenv
+    conda install numpy pandas scikit-learn
+    ```"
+            }
+        },
+        {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": [
+                "### 3.3 JupyterLab and Jupyter Notebooks\n",
+                "\n",
+                "Jupyter is critical for interactive data science work:\n",
+                "\n",
+    ```bash
+    pip install jupyterlab
+    ```\n","or with conda:\n","\n",
+    ```bash
+    conda install -c conda-forge jupyterlab
+    ```\n","Then launch JupyterLab:\n","\n",
+    ```bash
+    jupyter lab
+    ```\n","This will open the JupyterLab interface in your browser. By default, it runs on `localhost: 8888` if you’re working locally."
+            }
+        },
+        {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": [
+                "### 3.4 Data Science Libraries and Tools\n",
+                "\n",
+                "- **NumPy:** Foundational library for numerical computations in Python.\n",
+                "- **Pandas:** Essential for data manipulation and analysis.\n",
+                "- **Matplotlib / Seaborn:** For data visualization.\n",
+                "- **scikit-learn:** Machine learning algorithms (classification, regression, clustering, etc.).\n",
+                "- **TensorFlow / PyTorch:** Deep learning frameworks.\n",
+                "- **Spark:** Big data processing (install via packages or directly from the Spark website)."
+            ]
+        },
+        {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": [
+                "## Part IV: Command-Line Data Wrangling"
+            ]
+        },
+        {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": [
+                "### 4.1 Using Shell Tools for Quick Data Inspection\n",
+                "\n",
+                "The command line can handle large text-based datasets efficiently:\n",
+                "\n",
+    - `wc -l data.csv`: Quickly see how many rows in `data.csv`.\n",
+    - `head -n 100 data.csv > sample.csv`: Extract a smaller subset for experimentation.\n",
+    - `split -l 1000000 data.csv data_part_`: Break a big file into 1-million-line chunks."
+            ]
+        },
+        {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": [
+                "### 4.2 Example: CSV Cleaning Pipeline\n",
+                "\n",
+                "Consider you have a CSV file with noisy data:\n",
+                "\n",
+    ```bash
+    cat data.csv | tr -d '\\r' | grep -v \"^#\" | awk -F, '{ if ($3 != \"\") print $0 }' > clean_data.csv
+    ```\n","\n","Breaking it down:\n",
+                "\n",
+                "- `tr -d '\\r'`: Remove carriage return characters (helpful when dealing with Windows-origin files).\n",
+                "- `grep -v \"^#\"`: Remove lines starting with `#`, often used for comments.\n",
+                "- `awk -F, '{ if ($3 != \"\") print $0 }'`: Keep lines where the third column is non-empty.\n",
+                "- `>` redirects the final result to `clean_data.csv`."
+            ]
+        },
+        {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": [
+                "### 4.3 Combining Shell Tools and Python\n",
+                "\n",
+                "While shell tools are great for quick manipulations, you might switch to Python for more complex tasks. You can seamlessly combine them:\n",
+                "\n",
+    ```bash
+    cut -d',' -f1,
+                5 data.csv | python process_data.py
+    ```\n","Here, `cut` extracts columns 1 and 5 from `data.csv`, then pipes them into a Python script `process_data.py`."
+            ]
+        },
+        {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": [
+                "## Part V: Shell Scripting and Automation"
+            ]
+        },
+        {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": [
+                "### 5.1 Writing Your First Shell Script\n",
+                "\n",
+                "A shell script is just a text file containing commands that can be executed sequentially. Start with the shebang line to indicate which shell to use:\n",
+                "\n",
+    ```bash
+    #!/usr/bin/env bash
+
+    # A simple shell script
+    echo \"Hello, Data Science!\"
+    ```\n","\n","Make it executable:\n",
+                "\n",
+    ```bash
+    chmod +x myscript.sh
+    ./myscript.sh
+    ```"
+            ]
+        },
+        {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": [
+                "### 5.2 Variables and Arguments\n",
+                "\n",
+                "**Variables**\n",
+                "\n",
+                "In bash, assigning a variable looks like:\n",
+                "\n",
+    ```bash
+    #!/usr/bin/env bash
+
+    NAME=\"Alice\"
+    echo \"Hello, $NAME!\"
+    ```\n","Note that there’s no space before or after the `=` sign. Use `$NAME` to reference the variable.\n","\n",
+                "**Arguments**\n",
+                "\n",
+                "Inside a shell script, `$1`, `$2`, `$3`, etc., refer to positional arguments passed to the script:\n",
+                "\n",
+    ```bash
+    #!/usr/bin/env bash
+
+    echo \"The first argument is $1\"
+    echo \"The second argument is $2\"
+    ```\n","When running:\n","\n",
+    ```bash
+    ./myscript.sh argument1 argument2
+    ```\n","Outputs:\n","\n",
+    ```bash
+    The first argument is argument1
+    The second argument is argument2
+    ```"
+            ]
+        },
+        {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": [
+                "### 5.3 Conditionals and Loops\n",
+                "\n",
+                "**If Statements**\n",
+                "\n",
+    ```bash
+    if [ $1 -gt 100
+                ]; then
+        echo \"Argument is greater than 100\"
+    else
+        echo \"Argument is less than or equal to 100\"
+    fi
+    ```\n","- `-gt` stands for “greater than,” and similar numeric operators exist (`-lt`, `-eq`, `-ne`, etc.). For string comparison, use `=` or `!=`.\n","\n",
+                "**For Loops**\n",
+                "\n",
+    ```bash
+    for i in {1..5
+                }; do
+        echo \"Iteration $i\"
+    done
+    ```\n","You can also loop through file patterns:\n","\n",
+    ```bash
+    for file in *.txt; do
+        echo \"Processing $file\"
+    done
+    ```"
+            ]
+        },
+        {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": [
+                "### 5.4 Scheduling Jobs with cron\n",
+                "\n",
+                "`cron` is a system daemon used to schedule commands or scripts to run periodically.\n",
+                "\n",
+                "**crontab**\n",
+                "\n",
+                "Use `crontab -e` to edit your cron jobs. A crontab entry has the format:\n",
+                "\n",
+    ```cron
+    *  *  *  *  *   /path/to/command
+    |  |  |  |  |
+    |  |  |  |  └─ Day of week (0-7)
+    |  |  |  └──── Month (1-12)
+    |  |  └─────── Day of month (1-31)
+    |  └────────── Hour (0-23)
+    └───────────── Minute (0-59)
+    ```\n","\n","**Example:**\n",
+                "\n",
+    ```cron
+    0 2 * * * /home/user/scripts/backup.sh
+    ```\n","Runs `backup.sh` at 2: 00 AM every day."
+            ]
+        },
+        {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": [
+                "## Part VI: Collaboration and Version Control"
+            ]
+        },
+        {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": [
+                "### 6.1 Git Basics\n",
+                "\n",
+                "`git` is the most widely used version control system:\n",
+                "\n",
+    - `git init`: Initialize a repository in the current directory.\n",
+    - `git clone <repo_url>`: Clone a remote repository to your local machine.\n",
+    - `git add <file>`: Stage changes for commit.\n",
+    - `git commit -m \"Message\"`: Commit staged changes with a descriptive message.\n",
+    - `git push`: Upload your local commits to a remote repository (e.g., GitHub or GitLab).\n",
+    - `git pull`: Fetch and merge changes from the remote repository."
+            ]
+        },
+        {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": [
+                "### 6.2 Branching Workflow\n",
+                "\n",
+    ```bash
+    git branch new-feature
+    git checkout new-feature
+    # Make changes, commits
+    git checkout main
+    git merge new-feature
+    ```\n","In data science, branching is useful to experiment with new analyses or models without affecting the production or main code base."
+            }
+        },
+        {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": [
+                "### 6.3 GitHub, GitLab, and Bitbucket\n",
+                "\n",
+                "- **GitHub:** The most popular host for open-source projects. Great for collaboration, pull requests, and code reviews.\n",
+                "- **GitLab:** Offers integrated DevOps features (CI/CD pipelines).\n",
+                "- **Bitbucket:** Popular with teams that use Atlassian products (Jira, Confluence)."
+            ]
+        },
+        {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": [
+                "## Part VII: Working with Remote Servers"
+            ]
+        },
+        {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": [
+                "### 7.1 SSH and Remote Access\n",
+                "\n",
+    - `ssh username@server_address`: Securely connects to a remote Linux server.\n",
+    - `scp file username@server_address:~/dest`: Securely copy file to the remote server (destination path `~/dest`).\n",
+    - `rsync -avz local_dir username@server_address:~/dest_dir`: Efficiently synchronize directories between local and remote."
+            }
+        },
+        {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": [
+                "### 7.2 Tunneling and Port Forwarding\n",
+                "\n",
+                "Sometimes you need to securely forward a port from the server to your local machine, for instance to access a Jupyter notebook running on a remote server:\n",
+                "\n",
+    ```bash
+    ssh -L 8888:localhost: 8888 username@server_address
+    ```\n","Then open [http: //localhost:8888](http://localhost:8888) in your local browser to access the remote Jupyter notebook."
+                ]
+            },
+            {
+                "cell_type": "markdown",
+                "metadata": {},
+                "source": [
+                    "## Part VIII: Introduction to High-Performance Computing (HPC)"
+                ]
+            },
+            {
+                "cell_type": "markdown",
+                "metadata": {},
+                "source": [
+                    "### 8.1 Why HPC for Data Science?\n",
+                    "\n",
+                    "When datasets grow huge or models become very computationally intensive (e.g., deep learning), you may need:\n",
+                    "\n",
+                    "- More CPU/GPU resources.\n",
+                    "- Faster interconnects (InfiniBand).\n",
+                    "- Parallel computing frameworks (MPI, Spark, Dask).\n",
+                    "\n",
+                    "Linux is the default environment in HPC clusters because of its stability and flexibility."
+                ]
+            },
+            {
+                "cell_type": "markdown",
+                "metadata": {},
+                "source": [
+                    "### 8.2 Job Schedulers\n",
+                    "\n",
+                    "Common HPC clusters use a job scheduler like:\n",
+                    "\n",
+                    "- **SLURM (Simple Linux Utility for Resource Management)**.\n",
+                    "- **PBS (Portable Batch System)**.\n",
+                    "- **LSF (IBM Spectrum LSF)**.\n",
+                    "\n",
+                    "You typically submit jobs via a job script. For example, with SLURM:\n",
+                    "\n",
+    ```bash
+    #!/usr/bin/env bash
+    #SBATCH --job-name=myjob
+    #SBATCH --ntasks=4
+    #SBATCH --time=01: 00: 00
+    #SBATCH --mem=4G
+
+    module load python/3.9
+    srun python my_script.py
+    ```\n","Submit this job with `sbatch myjob.sh`."
+                ]
+            },
+            {
+                "cell_type": "markdown",
+                "metadata": {},
+                "source": [
+                    "### 8.3 Parallel Processing with Python\n",
+                    "\n",
+                    "Libraries such as `multiprocessing` and frameworks like `Dask` allow you to spread tasks across multiple cores or nodes:\n",
+                    "\n",
+    ```python
+    from dask import delayed
+    import dask.multiprocessing
+
+    def square(x):
+        return x * x
+
+    results = []
+    for i in range(1000):
+        results.append(delayed(square)(i))
+
+    total = delayed(sum)(results)
+    print(total.compute())
+    ```\n","`Dask` automatically parallelizes the workload across available cores."
+                ]
+            },
+            {
+                "cell_type": "markdown",
+                "metadata": {},
+                "source": [
+                    "## Part IX: Containerization for Data Science"
+                ]
+            },
+            {
+                "cell_type": "markdown",
+                "metadata": {},
+                "source": [
+                    "### 9.1 Docker Basics\n",
+                    "\n",
+                    "Docker packages your environment and application into containers, ensuring consistency across different machines.\n",
+                    "\n",
+    ```bash
+    docker build -t mydatascience .
+    docker run -it mydatascience
+    ```\n","\n","**Dockerfile example:**\n",
+                    "\n",
+    ```dockerfile
+    FROM python: 3.9-slim
+
+    WORKDIR /app
+    COPY requirements.txt .
+    RUN pip install -r requirements.txt
+    COPY . .
+
+    CMD [\"python\", \"analysis.py\"]
+    ```"
+                    ]
+                },
+                {
+                    "cell_type": "markdown",
+                    "metadata": {},
+                    "source": [
+                        "### 9.2 Singularity/Apptainer in HPC\n",
+                        "\n",
+                        "Many HPC centers use Singularity (now Apptainer) instead of Docker because of security features. You can build a container on your local machine with Docker, then convert it to Singularity for HPC deployment."
+                    ]
+                },
+                {
+                    "cell_type": "markdown",
+                    "metadata": {},
+                    "source": [
+                        "## Part X: Security and Best Practices"
+                    ]
+                },
+                {
+                    "cell_type": "markdown",
+                    "metadata": {},
+                    "source": [
+                        "### 10.1 System Updates and Security Patches\n",
+                        "\n",
+                        "Keep your system up to date:\n",
+                        "\n",
+                        "- **Ubuntu:**\n",
+                        "  ```bash\n",
+                        "  sudo apt update && sudo apt upgrade\n",
+                        "  ```\n",
+                        "- **Fedora:**\n",
+                        "  ```bash\n",
+                        "  sudo dnf upgrade\n",
+                        "  ```\n",
+                        "Regularly review security advisories and patches."
+                    ]
+                },
+                {
+                    "cell_type": "markdown",
+                    "metadata": {},
+                    "source": [
+                        "### 10.2 Firewall Configuration\n",
+                        "\n",
+                        "Most distros include `iptables` or `firewalld`:\n",
+                        "\n",
+                        "- **Ubuntu** uses `ufw` (Uncomplicated Firewall) as a user-friendly interface.\n",
+                        "\n",
+    ```bash
+    sudo ufw status        # Check firewall status
+    sudo ufw enable        # Enable the firewall
+    sudo ufw allow 22       # Allows SSH.
+    sudo ufw allow 8888     # For Jupyter.
+    ```"
+                    ]
+                },
+                {
+                    "cell_type": "markdown",
+                    "metadata": {},
+                    "source": [
+                        "### 10.3 Using SSH Keys\n",
+                        "\n",
+                        "Instead of passwords, generate SSH key pairs for secure login:\n",
+                        "\n",
+    ```bash
+    ssh-keygen -t rsa -b 4096
+    cat ~/.ssh/id_rsa.pub | ssh username@server_address \"mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys\"
+    ```\n","Now you can `ssh username@server_address` without a password (assuming correct permissions)."
+                    ]
+                },
+                {
+                    "cell_type": "markdown",
+                    "metadata": {},
+                    "source": [
+                        "### 10.4 Environment and Package Isolation\n",
+                        "\n",
+                        "- Use virtual environments or conda environments to avoid dependency conflicts.\n",
+                        "- Leverage containers (Docker, Singularity) for consistent, reproducible environments."
+                    ]
+                },
+                {
+                    "cell_type": "markdown",
+                    "metadata": {},
+                    "source": [
+                        "## Part XI: Performance Monitoring and Optimization"
+                    ]
+                },
+                {
+                    "cell_type": "markdown",
+                    "metadata": {},
+                    "source": [
+                        "### 11.1 Monitoring Tools\n",
+                        "\n",
+                        "- `nvidia-smi`: Monitors GPU usage (NVIDIA GPUs).\n",
+                        "- `vmstat`, `iostat`, `sar`: Collect and report system activity, CPU, memory, IO usage.\n",
+                        "- `iotop`: Monitors disk I/O in real time."
+                    ]
+                },
+                {
+                    "cell_type": "markdown",
+                    "metadata": {},
+                    "source": [
+                        "### 11.2 System Profiling\n",
+                        "\n",
+                        "**time command:** Basic measurement of how long a command takes.\n",
+                        "\n",
+    ```bash
+    time python my_script.py
+    ```\n","\n","**cProfile (Python):** Built-in profiler.\n",
+                        "\n",
+    ```python
+    import cProfile
+    cProfile.run('my_function()')
+    ```"
+                    }
+                },
+                {
+                    "cell_type": "markdown",
+                    "metadata": {},
+                    "source": [
+                        "### 11.3 Memory Tuning\n",
+                        "\n",
+                        "- Use `swapoff -a` on HPC systems to see if you’re relying on swap (not always recommended in production).\n",
+                        "- Increase memory usage? Plan your scripts so they read data in chunks or use out-of-core libraries such as `Dask`."
+                    ]
+                },
+                {
+                    "cell_type": "markdown",
+                    "metadata": {},
+                    "source": [
+                        "## Part XII: Advanced Topics"
+                    ]
+                },
+                {
+                    "cell_type": "markdown",
+                    "metadata": {},
+                    "source": [
+                        "### 12.1 Building Software from Source\n",
+                        "\n",
+                        "Sometimes you need the latest or a custom version of a library:\n",
+                        "\n",
+                        "- Install dependencies: Often the `-dev` versions of libraries.\n",
+                        "- Download source (e.g., `git clone <repo_url>`).\n",
+                        "- Configure, build, install:\n",
+                        "\n",
+    ```bash
+    ./configure
+    make
+    sudo make install
+    ```"
+                    ]
+                },
+                {
+                    "cell_type": "markdown",
+                    "metadata": {},
+                    "source": [
+                        "### 12.2 Systemd Services\n",
+                        "\n",
+                        "You can create system services (like for a web application, data pipeline, or JupyterHub) using `systemd`:\n",
+                        "\n",
+    ```bash
+    sudo nano /etc/systemd/system/myapp.service
+    ```\n","\n","**Example unit file:**\n",
+                        "\n",
+    ```makefile
+    [Unit
+                        ]
+    Description=My Data Science App
+
+    [Service
+                        ]
+    ExecStart=/usr/bin/python /home/user/myapp.py
+    Restart=always
+    User=user
+
+    [Install
+                        ]
+    WantedBy=multi-user.target
+    ```\n","Then:\n","\n",
+    ```bash
+    sudo systemctl daemon-reload
+    sudo systemctl enable myapp
+    sudo systemctl start myapp
+    ```"
+                    ]
+                },
+                {
+                    "cell_type": "markdown",
+                    "metadata": {},
+                    "source": [
+                        "### 12.3 Remote Development with VS Code\n",
+                        "\n",
+                        "VS Code has remote development extensions that allow you to code directly on a remote Linux server:\n",
+                        "\n",
+                        "- **Remote SSH:** Use SSH to open a remote folder on the server and work as if it’s local."
+                    ]
+                },
+                {
+                    "cell_type": "markdown",
+                    "metadata": {},
+                    "source": [
+                        "### 12.4 Data Science Pipelines on Linux\n",
+                        "\n",
+                        "- **Airflow:** Workflow orchestration, good for data engineering.\n",
+                        "- **Luigi:** Simplifies complex pipeline management with tasks and dependencies.\n",
+                        "- **Prefect:** Modern approach to pipeline orchestration.\n",
+                        "\n",
+                        "These tools typically run on Linux-based servers and leverage Python for pipeline definitions."
+                    ]
+                },
+                {
+                    "cell_type": "markdown",
+                    "metadata": {},
+                    "source": [
+                        "## Part XIII: Putting It All Together"
+                    ]
+                },
+                {
+                    "cell_type": "markdown",
+                    "metadata": {},
+                    "source": [
+                        "### 13.1 A Typical Data Science Workflow on Linux\n",
+                        "\n",
+                        "**Environment Setup:**\n",
+                        "\n",
+                        "- Create a conda environment with Python libraries.\n",
+                        "- Possibly containerize it with Docker or Singularity for reproducibility.\n",
+                        "\n",
+                        "**Data Ingestion:**\n",
+                        "\n",
+                        "- Use `scp` or `rsync` to transfer raw data to your Linux machine.\n",
+                        "- Quick checks with `head`, `wc -l`, or `grep`.\n",
+                        "\n",
+                        "**Data Cleaning:**\n",
+                        "\n",
+                        "- Filter out unwanted rows with `awk` and `sed`.\n",
+                        "- Alternatively, load into Python (`pandas`) for more complex transformations.\n",
+                        "\n",
+                        "**Exploratory Analysis:**\n",
+                        "\n",
+                        "- Use Jupyter notebooks (local or remote with SSH tunneling).\n",
+                        "- Visualize with `matplotlib` or `seaborn`.\n",
+                        "\n",
+                        "**Modeling:**\n",
+                        "\n",
+                        "- Use `scikit-learn`, `TensorFlow`, or `PyTorch`.\n",
+                        "- If the dataset is huge, switch to HPC or distributed computing with Spark/Dask.\n",
+                        "\n",
+                        "**Deployment:**\n",
+                        "\n",
+                        "- Package scripts into Docker containers.\n",
+                        "- Deploy in production or schedule with `cron`, `systemd`, or an orchestration tool like Kubernetes.\n",
+                        "\n",
+                        "**Monitoring and Optimization:**\n",
+                        "\n",
+                        "- Monitor system load with `top`, GPU usage with `nvidia-smi`.\n",
+                        "- Profile scripts, adjust environment, and possibly scale to HPC."
+                    ]
+                },
+                {
+                    "cell_type": "markdown",
+                    "metadata": {},
+                    "source": [
+                        "### 13.2 Tips for Success\n",
+                        "\n",
+                        "- **Learn the Command Line:** Mastering Linux commands (pipes, redirection, text processing) will save you huge amounts of time in data wrangling tasks.\n",
+                        "- **Keep Things Automated:** Shell scripts, cron jobs, and pipeline managers help you avoid repetitive manual tasks.\n",
+                        "- **Version Control Everything:** Not just code, but also your config files or environment definitions (via Dockerfiles, `environment.yml`, etc.).\n",
+                        "- **Security & Reliability:** Keep your system patched, use SSH keys, manage firewall rules, and test your environment thoroughly."
+                    ]
+                },
+                {
+                    "cell_type": "markdown",
+                    "metadata": {},
+                    "source": [
+                        "## Part XIV: Resources and Further Reading"
+                    ]
+                },
+                {
+                    "cell_type": "markdown",
+                    "metadata": {},
+                    "source": [
+                        "### Official Linux Documentation:\n",
+                        "\n",
+                        "- Linux Documentation Project (though not updated frequently, still a good historical resource).\n",
+                        "- Distro-specific docs (e.g., Ubuntu Docs, Fedora Docs).\n",
+                        "\n",
+                        "### Books:\n",
+                        "\n",
+                        "- *The Linux Command Line* by William Shotts.\n",
+                        "- *UNIX and Linux System Administration Handbook* by Evi Nemeth et al.\n",
+                        "\n",
+                        "### Online Courses:\n",
+                        "\n",
+                        "- edX Linux Courses\n",
+                        "- Coursera Data Science Specializations\n",
+                        "\n",
+                        "### Tools:\n",
+                        "\n",
+                        "- Docker Documentation\n",
+                        "- Singularity / Apptainer Docs\n",
+                        "- Dask Documentation\n",
+                        "- Airflow Documentation\n",
+                        "\n",
+                        "### HPC:\n",
+                        "\n",
+                        "- SLURM Docs\n",
+                        "- OpenMPI\n",
+                        "- MPI4Py"
+                    ]
+                },
+                {
+                    "cell_type": "markdown",
+                    "metadata": {},
+                    "source": [
+                        "## Conclusion"
+                    ]
+                },
+                {
+                    "cell_type": "markdown",
+                    "metadata": {},
+                    "source": [
+                        "This notebook provides a comprehensive overview of using Linux for data science, covering essential commands, tools, and best practices. By mastering these concepts, you'll enhance your data science workflow, improve efficiency, and ensure reproducibility in your projects."
+                    ]
+                }
+            ],
+            "metadata": {
+                "kernelspec": {
+                    "display_name": "Python 3",
+                    "language": "python",
+                    "name": "python3"
+                },
+                "language_info": {
+                    "name": "python",
+                    "version": "3.9.7",
+                    "mimetype": "text/x-python",
+                    "codemirror_mode": {
+                        "name": "ipython",
+                        "version": 3
+                    },
+                    "pygments_lexer": "ipython3",
+                    "nbconvert_exporter": "python",
+                    "file_extension": ".py"
+                }
+            },
+            "nbformat": 4,
+            "nbformat_minor": 5
+        }
